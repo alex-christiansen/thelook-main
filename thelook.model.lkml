@@ -8,6 +8,9 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
 # # and define the joins that connect them together.
 #
 explore: order_items {
+  always_filter: {
+    filters: [order_items.created_date: "1 days ago for 1 days"]
+  }
   view_name: order_items
   join: users {
     relationship: many_to_one
