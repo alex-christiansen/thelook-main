@@ -1,11 +1,5 @@
 project_name: "google-demo-project"
 
-# # Use local_dependency: To enable referencing of another project
-# # on this instance with include: statements
-#
-# local_dependency: {
-#   project: "name_of_other_project"
-# }
 
 constant: currency_html {
   value: "
@@ -29,8 +23,5 @@ constant: currency_html {
   {% else %}
   {{ currency_value }}
   {% endif %}
-
-
-
   "
 }
