@@ -2,6 +2,7 @@ connection: "bigquery-sa"
 label: " eCommerce"
 # include: "/queries/queries*.view" # includes all queries refinements
 include: "/views/**/*.view" # include all the views
+include: "/pop/**/*.view"
 # include: "/gen_ai/**/*.view" # include all the views
 include: "/dashboards/*.dashboard.lookml" # include all the views
 
@@ -69,3 +70,14 @@ explore: order_items {
     relationship: many_to_one
   }
 }
+
+explore: +order_items {
+  sql_always_where:
+    1=1
+    {% if order_items.current_vs_previous_period_advanced._in_query %}AND ${order_items.current_vs_previous_period_advanced} IS NOT NULL{% endif %}
+    {% if parameters.apply_to_date_filter_advanced._is_filtered %}AND ${order_items.is_to_date_advanced}{% endif %}
+   ;;
+
+    join: parameters {}
+
+  }

@@ -179,7 +179,7 @@ view: order_items {
 
   dimension_group: created {
     type: time
-    timeframes: [time, hour, date, week, month, year, hour_of_day, day_of_week, month_num, raw, week_of_year,month_name]
+    timeframes: [time, hour, date, week, month, year, hour_of_day, day_of_week, day_of_year, day_of_month, quarter, month_num, raw, week_of_year,month_name]
     sql: ${TABLE}.created_at ;;
     #order_by_field: created_month_num
   }
@@ -281,6 +281,21 @@ view: order_items {
     sql: 100*${item_gross_margin_percentage} ;;
     tiers: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]
     style: interval
+  }
+
+  parameter: agg_type {
+    type: unquoted
+    allowed_value: {
+      value: "SUM"
+    }
+    allowed_value: {
+      value: "AVG"
+    }
+  }
+
+  measure: dynamic_agg {
+    type: number
+    sql: {% parameter agg_type %}(${sale_price}) ;;
   }
 
   measure: total_sale_price {
