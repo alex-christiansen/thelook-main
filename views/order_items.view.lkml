@@ -4,6 +4,7 @@ view: order_items {
   ########## IDs, Foreign Keys, Counts ###########
 
   dimension: id {
+    tags: ["phone"]
     label: "ID"
     primary_key: yes
     type: number
@@ -179,7 +180,7 @@ view: order_items {
 
   dimension_group: created {
     type: time
-    timeframes: [time, hour, date, week, month, year, hour_of_day, day_of_week, day_of_year, day_of_month, quarter, month_num, raw, week_of_year,month_name]
+    timeframes: [time, hour, date, week, month, year, hour_of_day, day_of_week,day_of_week_index, day_of_year, day_of_month, quarter, month_num, raw, week_of_year,month_name]
     sql: ${TABLE}.created_at ;;
     #order_by_field: created_month_num
   }
@@ -500,3 +501,75 @@ view: order_items {
     fields: [id, order_id, status, created_date, returned_date, sale_price, products.brand, products.item_name, users.portrait, users.name, users.email]
   }
 }
+
+#add fields onto my existing base view
+  view: +order_items {
+    parameter: timeframe {
+      view_label: "Period over Period"
+      type: unquoted
+      allowed_value: {
+        label: "Week to Date"
+        value: "Week"
+      }
+      allowed_value: {
+        label: "Month to Date"
+        value: "Month"
+      }
+      allowed_value: {
+        label: "Quarter to Date"
+        value: "Quarter"
+      }
+      allowed_value: {
+        label: "Year to Date"
+        value: "Year"
+      }
+      default_value: "Quarter"
+    }
+
+    # To get start date we need to get either first day of the year, month or quarter
+    dimension: first_date_in_period {
+      view_label: "Period over Period"
+      type: date
+      hidden: no
+      sql: DATE_TRUNC(CURRENT_DATE(), {% parameter timeframe %});;
+    }
+
+    #Now get the total number of days in the period
+    dimension: days_in_period {
+      view_label: "Period over Period"
+      type: number
+      hidden: no
+      sql: DATE_DIFF(CURRENT_DATE(),${first_date_in_period}, DAY) ;;
+    }
+
+    #Now get the first date in the prior period
+    dimension: first_date_in_prior_period {
+      view_label: "Period over Period"
+      type: date
+      hidden: no
+      sql: DATE_TRUNC(DATE_ADD(CURRENT_DATE(), INTERVAL -1 {% parameter timeframe %}),{% parameter timeframe %});;
+    }
+
+    #Now get the last date in the prior period
+    dimension: last_date_in_prior_period {
+      view_label: "Period over Period"
+      type: date
+      hidden: no
+      sql: DATE_ADD(${first_date_in_prior_period}, INTERVAL ${days_in_period} DAY) ;;
+    }
+
+    # Now figure out which period each date belongs in (update with your own date dimension that you want to leverage)
+    dimension: period_selected {
+      view_label: "Period over Period"
+      type: string
+      sql:
+        CASE
+          WHEN ${created_date} >=  ${first_date_in_period}
+          THEN 'This {% parameter timeframe %} to Date'
+          WHEN ${created_date} >= ${first_date_in_prior_period}
+          AND ${created_date} <= ${last_date_in_prior_period}
+          THEN 'Prior {% parameter timeframe %} to Date'
+          ELSE NULL
+          END ;;
+    }
+  }
