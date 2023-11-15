@@ -32,15 +32,27 @@ view: order_items {
     drill_fields: [detail*]
   }
 
+  measure: orders {
+    type: count_distinct
+    sql: ${id} ;;
+  }
+
+  measure: yesterdays_sales {
+    type: count_distinct
+    sql: ${id} ;;
+    filters: [created_date: "2 day ago for 1 day"]
+  }
+
   measure: count_last_28d {
     label: "Count Sold in Trailing 28 Days"
     type: count_distinct
     sql: ${id} ;;
-    hidden: yes
-    filters:
-    {field:created_date
-      value: "28 days"
-    }}
+    # hidden: yes
+    filters: [created_date: "28 days",status: "-NULL"]
+    # {field:created_date
+    #   value: "28 days"
+    # }
+    }
 
   measure: order_count {
     view_label: "Orders"
