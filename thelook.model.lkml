@@ -19,6 +19,8 @@ explore: order_items {
   label: "(1) Orders, Items and Users"
   view_name: order_items
 
+  sql_always_where: ${products.brand} = 'Carhartt' ;;
+
   join: order_facts {
     type: left_outer
     view_label: "Orders"
