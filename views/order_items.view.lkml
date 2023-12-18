@@ -12,6 +12,12 @@ view: order_items {
     value_format: "00000"
   }
 
+  dimension: video {
+    type: string
+    sql: 'https://www.w3schools.com/html/mov_bbb.mp4' ;;
+    html: <video width="290" height="130" controls preload="none"> <controls> <source src="{{ value }}" type="video/mp4"> </video> ;;
+  }
+
   dimension: inventory_item_id {
     label: "Inventory Item ID"
     type: number
