@@ -18,6 +18,10 @@ explore: sales_summary {}
 explore: order_items {
   label: "(1) Orders, Items and Users"
   view_name: order_items
+  access_filter: {
+    field: users.country
+    user_attribute: locations
+  }
 
   # sql_always_where: ${products.brand} = 'Carhartt' ;;
 
