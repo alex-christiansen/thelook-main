@@ -20,6 +20,7 @@ explore: order_items {
   view_name: order_items
 
   sql_always_where: ${products.brand} = 'Carhartt' ;;
+  # test
 
   join: order_facts {
     type: left_outer
