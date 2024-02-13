@@ -18,8 +18,10 @@ explore: sales_summary {}
 explore: order_items {
   label: "(1) Orders, Items and Users"
   view_name: order_items
-
-  sql_always_where: ${products.brand} = 'Carhartt' ;;
+  access_filter: {
+    user_attribute: brand
+    field: products.brand
+  }
 
   join: order_facts {
     type: left_outer
