@@ -13,14 +13,9 @@ datagroup: ecommerce_etl {
 persist_with: ecommerce_etl
 ############ Base Explores #############
 
-explore: sales_summary {}
-
 explore: order_items {
   label: "(1) Orders, Items and Users"
   view_name: order_items
-
-  sql_always_where: ${products.brand} = 'Carhartt' ;;
-  # test
 
   join: order_facts {
     type: left_outer

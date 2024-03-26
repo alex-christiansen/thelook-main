@@ -2,6 +2,82 @@ view: order_items {
   sql_table_name: looker-private-demo.ecomm.order_items ;;
   view_label: "Order Items"
   ########## IDs, Foreign Keys, Counts ###########
+  dimension: wtd_only {
+    group_label: "To-Date Filters"
+    label: "WTD"
+    view_label: "_PoP"
+    type: yesno
+    sql:  (DAYOFWEEK(${created_raw}) < DAYOFWEEK(CURRENT_DATETIME())
+ OR
+ (DAYOFWEEK(${created_raw}) = DAYOFWEEK(CURRENT_DATETIME()) AND
+  EXTRACT(HOUR FROM ${created_raw}) < EXTRACT(HOUR FROM CURRENT_DATETIME()))
+ OR
+ (DAYOFWEEK(${created_raw}) = DAYOFWEEK(CURRENT_DATETIME()) AND
+  EXTRACT(HOUR FROM ${created_raw}) <= EXTRACT(HOUR FROM CURRENT_DATETIME()) AND
+  EXTRACT(MINUTE FROM ${created_raw}) < EXTRACT(MINUTE FROM CURRENT_DATETIME())))  ;;
+  }
+
+  dimension: mtd_only {
+    group_label: "To-Date Filters"
+    label: "MTD"
+    view_label: "_PoP"
+    type: yesno
+    sql:  (EXTRACT(DAY FROM ${created_raw}) < EXTRACT(DAY FROM CURRENT_DATETIME())
+ OR
+ (EXTRACT(DAY FROM ${created_raw}) = EXTRACT(DAY FROM CURRENT_DATETIME()) AND
+  EXTRACT(HOUR FROM ${created_raw}) < EXTRACT(HOUR FROM CURRENT_DATETIME()))
+ OR
+ (EXTRACT(DAY FROM ${created_raw}) = EXTRACT(DAY FROM CURRENT_DATETIME()) AND
+  EXTRACT(HOUR FROM ${created_raw}) <= EXTRACT(HOUR FROM CURRENT_DATETIME()) AND
+  EXTRACT(MINUTE FROM ${created_raw}) < EXTRACT(MINUTE FROM CURRENT_DATETIME())))
+  ;;
+  }
+
+  dimension: ytd_only {
+    group_label: "To-Date Filters"
+    label: "YTD"
+    view_label: "_PoP"
+    type: yesno
+    sql:  (EXTRACT(DAYOFYEAR FROM ${created_raw}) < EXTRACT(DAYOFYEAR FROM CURRENT_TIMESTAMP())
+ OR
+ (EXTRACT(DAYOFYEAR FROM ${created_raw}) = EXTRACT(DAYOFYEAR FROM CURRENT_TIMESTAMP()) AND
+  EXTRACT(HOUR FROM ${created_raw}) < EXTRACT(HOUR FROM CURRENT_TIMESTAMP()))
+ OR
+ (EXTRACT(DAYOFYEAR FROM ${created_raw}) = EXTRACT(DAYOFYEAR FROM CURRENT_TIMESTAMP()) AND
+  EXTRACT(HOUR FROM ${created_raw}) <= EXTRACT(HOUR FROM CURRENT_TIMESTAMP()) AND
+  EXTRACT(MINUTE FROM ${created_raw}) < EXTRACT(MINUTE FROM CURRENT_TIMESTAMP())))
+  ;;
+  }
+
+  measure: total_sales_ytd {
+    label: "Total Sale Price (YTD)"
+    type: sum
+    sql: ${sale_price} ;;
+    filters: [
+      ytd_only: "Yes",
+      created_date: "this year"
+    ]
+    value_format_name: usd_0
+  }
+
+  measure: total_sales_lytd {
+    label: "Total Sale Price (LYTD)"
+    type: sum
+    sql: ${sale_price} ;;
+    filters: [
+      ytd_only: "Yes",
+      created_date: "last year"
+    ]
+    value_format_name: usd_0
+  }
+
+  measure: yoy_sale_increase {
+    label: "Total Sale Price % Inc (YoY)"
+    type: number
+    sql: ${total_sales_ytd}/nullif(${total_sales_lytd},0)-1 ;;
+    value_format_name: percent_1
+  }
+
 
   dimension: id {
     tags: ["phone"]
