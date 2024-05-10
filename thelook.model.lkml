@@ -1,4 +1,4 @@
-connection: "bigquery-sa"
+connection: "bigquery-adc"
 label: " eCommerce - Demo"
 # include: "/queries/queries*.view" # includes all queries refinements
 include: "/views/**/*.view" # include all the views
