@@ -3,8 +3,6 @@ label: " eCommerce - Demo"
 # include: "/queries/queries*.view" # includes all queries refinements
 include: "/views/**/*.view" # include all the views
 
-########## This is my first prod change ######
-
 ############ Model Configuration #############
 
 datagroup: ecommerce_etl {
