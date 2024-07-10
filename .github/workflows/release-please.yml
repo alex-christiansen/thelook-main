@@ -1,8 +1,9 @@
 name: release-please
 
 on:
-  push:
+  pull_request:
     branches: [ main ]
+    types: [closed]
 
 
 permissions:
@@ -12,6 +13,7 @@ permissions:
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
     steps:
       - uses: googleapis/release-please-action@v4
         with:
