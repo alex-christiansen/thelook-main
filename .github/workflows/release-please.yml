@@ -17,5 +17,5 @@ jobs:
       - uses: google-github-actions/release-please-action@v3
         with:
           release-type: simple
-          token: ${{ secrets.looker-new }}
+          token: ${{ secrets.LOOKER-NEW }}
           package-name: sales_project
