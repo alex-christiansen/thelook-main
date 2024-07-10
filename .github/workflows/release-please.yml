@@ -1,12 +1,9 @@
 name: release-please
 
 on:
+  pull_request:
+    branches: [ main ]
   push:
-    branches:
-      - main
-  pull_request:  # Add this line
-    branches:
-      - main  
 
 permissions:
   contents: write
