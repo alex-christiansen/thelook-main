@@ -8,7 +8,7 @@ datagroup: ecommerce_etl {
   max_cache_age: "24 hours"
 }
 
-## add comment ##
+##### Final LookML Code on 4:05 PM July 10th, 2024 #####
 
 persist_with: ecommerce_etl
 
