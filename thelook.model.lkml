@@ -3,8 +3,6 @@ label: " eCommerce - Demo"
 # include: "/queries/queries*.view" # includes all queries refinements
 include: "/views/**/*.view" # include all the views
 
-## delete all comments @ 3:17 p
-
 datagroup: ecommerce_etl {
   sql_trigger: SELECT max(created_at) FROM ecomm.events ;;
   max_cache_age: "24 hours"
@@ -14,7 +12,6 @@ persist_with: ecommerce_etl
 
 explore: order_items {
   label: "(1) Orders, Items and Users"
-  # view_name: order_items
 
   join: order_facts {
     type: left_outer
