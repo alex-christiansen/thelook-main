@@ -5,6 +5,7 @@ include: "/views/**/*.view" # include all the views
 
 ## Added this line on 7-10 @ 1:33 pm
 ## Added this line on 7-10 @ 1:37 pm
+## Added this line on 7-10 @ 3:14 pm
 
 datagroup: ecommerce_etl {
   sql_trigger: SELECT max(created_at) FROM ecomm.events ;;
