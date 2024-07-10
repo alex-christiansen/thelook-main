@@ -8,6 +8,8 @@ datagroup: ecommerce_etl {
   max_cache_age: "24 hours"
 }
 
+## add comment ##
+
 persist_with: ecommerce_etl
 
 explore: order_items {
