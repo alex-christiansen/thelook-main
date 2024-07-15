@@ -9,6 +9,7 @@ datagroup: ecommerce_etl {
 }
 
 #### fix: No more OOM when doing X #####
+#### fix: No more OOM when doing X #####
 persist_with: ecommerce_etl
 
 explore: order_items {
