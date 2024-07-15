@@ -8,8 +8,7 @@ datagroup: ecommerce_etl {
   max_cache_age: "24 hours"
 }
 
-##### Final LookML Code on 4:05 PM July 10th, 2024 #####
-
+#### fix: No more OOM when doing X #####
 persist_with: ecommerce_etl
 
 explore: order_items {
