@@ -161,6 +161,16 @@ view: order_items {
     sql: ${TABLE}.order_id ;;
   }
 
+  dimension: ORDER_ID {
+    type:  string
+    sql: ${TABLE}.order_id ;;
+  }
+
+  dimension: Order_Id {
+    type: string
+    sql: ${TABLE}.order_id ;;
+  }
+
   dimension: order_id {
     label: "Order ID"
     type: number
