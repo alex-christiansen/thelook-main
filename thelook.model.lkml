@@ -14,6 +14,10 @@ persist_with: ecommerce_etl
 
 explore: order_items {
   label: "(1) Orders, Items and Users"
+  access_filter: {
+    field: products.brand
+    user_attribute: brand
+  }
 
   join: order_facts {
     type: left_outer
@@ -62,5 +66,20 @@ explore: order_items {
     type: left_outer
     sql_on: ${distribution_centers.id} = ${inventory_items.product_distribution_center_id} ;;
     relationship: many_to_one
+  }
+}
+
+# Place in `thelook` model
+explore: +order_items {
+  aggregate_table: rollup__created_date__products_brand {
+    query: {
+      dimensions: [created_date, products.brand]
+      measures: [order_count, total_gross_margin, total_sale_price]
+      filters: [order_items.created_date: "365 days"]
+    }
+
+    materialization: {
+      datagroup_trigger: ecommerce_etl
+    }
   }
 }

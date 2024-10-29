@@ -49,6 +49,15 @@ view: order_items {
   ;;
   }
 
+  dimension: test_dim {
+    type: string
+    sql: {% if status._in_query %}
+    'status in query'
+    {% else %}
+    'status not in query'
+    {% endif %};;
+  }
+
   measure: total_sales_ytd {
     label: "Total Sale Price (YTD)"
     type: sum
@@ -368,7 +377,7 @@ view: order_items {
     label: "Sale Price"
     type: number
     value_format_name: usd
-    sql: ${TABLE}.sale_price;;
+    sql: ${TABLE}.sale_price * .8;;
   }
 
   dimension: gross_margin {
