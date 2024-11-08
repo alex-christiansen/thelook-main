@@ -11,4 +11,4 @@ constant: format {
   value: "{{ user_attribute['value_format'] }}"
 }
 
-new_lookml_runtime: no
+# new_lookml_runtime: no
