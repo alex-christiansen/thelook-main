@@ -10,3 +10,5 @@ project_name: "thelook-dev"
 constant: format {
   value: "{{ user_attribute['value_format'] }}"
 }
+
+new_lookml_runtime: no
