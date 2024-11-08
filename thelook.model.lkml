@@ -11,6 +11,10 @@ datagroup: ecommerce_etl {
 #### fix: No more OOM when doing X #####
 #### fix: No more OOM when doing X #####
 persist_with: ecommerce_etl
+access_grant: can_see_financial_data {
+  allowed_values: ["Yes"]
+  user_attribute: can_see_financial_data
+}
 
 explore: order_items {
   label: "(1) Orders, Items and Users"

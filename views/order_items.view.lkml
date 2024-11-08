@@ -375,6 +375,7 @@ view: order_items {
 
   dimension: sale_price {
     label: "Sale Price"
+    required_access_grants: [can_see_financial_data]
     type: number
     value_format_name: usd
     sql: ${TABLE}.sale_price * .8;;
